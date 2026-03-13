@@ -134,10 +134,10 @@ export default async function Home() {
   const previousSearches = await getPreviousSearches();
 
   return (
-    <main className="min-h-screen px-6 py-14">
+    <main className="min-h-screen px-4 py-8 sm:px-6 sm:py-14">
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-col gap-10">
-          <div className="relative overflow-hidden rounded-[32px] border border-[#5ec2a4] bg-white/80 p-10 shadow-soft backdrop-blur fade-up">
+          <div className="relative overflow-hidden rounded-[32px] border border-[#5ec2a4] bg-white/80 p-5 sm:p-10 shadow-soft backdrop-blur fade-up">
             <div className="absolute -left-24 -top-24 h-64 w-64 rounded-full bg-[#81dcc1]/10 blur-3xl" />
             <div className="absolute -right-20 top-10 h-40 w-40 rounded-full bg-[#81dcc1]/10 blur-3xl" />
             <div className="relative flex flex-col gap-5">
@@ -159,8 +159,8 @@ export default async function Home() {
                 placement="home-hero-banner"
                 className="mt-2 pb-[15px]"
               />
-              <h1 className="text-2xl font-semibold leading-[1.35] text-[#262626] md:text-4xl">
-                <span className="text-3xl md:text-5xl">Searching for an OEM part?</span>
+              <h1 className="text-xl font-semibold leading-[1.35] text-[#262626] sm:text-2xl md:text-4xl">
+                <span className="text-2xl sm:text-3xl md:text-5xl">Searching for an OEM part?</span>
                 <span className="mt-2 block font-medium">Parts Vertical discovers the best pricing for you instantly.</span>
               </h1>
               <p className="max-w-2xl text-[15px] text-[#5ec2a4] md:text-[17px]">
