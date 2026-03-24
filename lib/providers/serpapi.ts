@@ -65,9 +65,12 @@ export const serpApiProvider: SearchProvider = {
   async searchByImage(imageUrl: string, options): Promise<ProviderCandidate[]> {
     if (!SERP_API_KEY) return [];
 
+    const negativeKeywords = '-shoe -sneaker -clothing -nike -adidas -apparel -toy -shirt -boot -trainer -jordan -dunk -yeezy';
+    
     const url = new URL('https://serpapi.com/search.json');
     url.searchParams.set('engine', 'google_lens');
     url.searchParams.set('url', imageUrl);
+    url.searchParams.set('q', `car part ${negativeKeywords}`);
     url.searchParams.set('api_key', SERP_API_KEY);
     const gl = mapCountryToGl(options?.country);
     if (gl) url.searchParams.set('gl', gl);
@@ -105,7 +108,16 @@ export const serpApiProvider: SearchProvider = {
 
     const url = new URL('https://serpapi.com/search.json');
     url.searchParams.set('engine', 'google_shopping');
-    url.searchParams.set('q', query);
+    // Force category: Vehicles & Parts (5613)
+    url.searchParams.set('tbs', 'p_cat:5613');
+    
+    // Auto-refine query with negative keywords
+    const negativeKeywords = '-shoe -sneaker -clothing -nike -adidas -apparel -toy -shirt -boot -trainer -jordan -dunk -yeezy -shirt -tshirt -hoodie';
+    const refinedQuery = query.toLowerCase().includes('part') || query.toLowerCase().includes('car') 
+      ? `${query} ${negativeKeywords}`
+      : `${query} car part ${negativeKeywords}`;
+      
+    url.searchParams.set('q', refinedQuery);
     url.searchParams.set('api_key', SERP_API_KEY);
     const gl = mapCountryToGl(options?.country);
     if (gl) url.searchParams.set('gl', gl);

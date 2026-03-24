@@ -221,13 +221,13 @@ export default async function Home() {
             </div>
           </div>
           {(previousSearches.length > 0 || !user) && (
-            <section className="rounded-3xl border border-[#5ec2a4] bg-white/80 px-6 py-8 shadow-soft fade-up fade-up-delay-1">
-              <div className="mb-6 flex items-end justify-between gap-4">
+            <section className="rounded-3xl border border-[#5ec2a4] bg-white/80 px-6 py-5 shadow-soft fade-up fade-up-delay-1">
+              <div className="mb-4 flex items-end justify-between gap-4">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#262626]/70">
                     {user ? 'Your' : 'Search'} history
                   </p>
-                  <h2 className="mt-2 text-2xl font-semibold text-[#262626]">
+                  <h2 className="mt-1 text-2xl font-semibold text-[#262626]">
                     {user ? 'Continue your search' : 'Save your results'}
                   </h2>
                 </div>
@@ -238,7 +238,7 @@ export default async function Home() {
                     key={item.id}
                     className="flex h-full flex-col overflow-hidden rounded-2xl border border-[#5ec2a4] bg-white"
                   >
-                    <div className="relative h-36 w-full bg-white">
+                    <div className="relative h-32 w-full bg-white">
                       <Image
                         src={item.image}
                         alt={item.title}
@@ -247,9 +247,9 @@ export default async function Home() {
                         className="object-cover"
                       />
                     </div>
-                    <div className="flex flex-1 flex-col gap-3 p-4">
+                    <div className="flex flex-1 flex-col gap-2 p-3">
                       <h3 className="line-clamp-2 text-sm font-semibold text-[#262626]">{item.title}</h3>
-                      <p className="text-[11px] text-[#262626]/70">
+                      <p className="text-[10px] text-[#262626]/70">
                         {new Intl.DateTimeFormat(undefined, {
                           month: 'short',
                           day: 'numeric',
@@ -267,33 +267,44 @@ export default async function Home() {
                     </div>
                   </article>
                 ))}
+              </div>
 
-                {!user && (
-                  <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-dashed border-[#5ec2a4] bg-[#81dcc1]/5 p-5 text-center justify-center items-center gap-4">
-                    <div className="h-12 w-12 rounded-full bg-[#5ec2a4] flex items-center justify-center text-white shadow-md animate-pulse">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
+              {!user && (
+                <div className={`mt-8 rounded-[2rem] border border-dashed border-[#5ec2a4]/30 bg-[#81dcc1]/5 p-8 transition-all hover:bg-[#81dcc1]/8 group ${previousSearches.length > 0 ? 'mt-12' : ''}`}>
+                  <div className="flex flex-col md:flex-row items-center gap-10">
+                    <div className="flex flex-col items-center gap-3 min-w-[160px]">
+                      <div className="h-16 w-16 rounded-full bg-[#5ec2a4] flex items-center justify-center text-white shadow-[0_8px_20px_-4px_rgba(94,194,164,0.4)] transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
+                      </div>
+                      <h3 className="text-[13px] font-black uppercase tracking-[0.2em] text-[#262626]">Save History</h3>
                     </div>
-                    <div>
-                      <h3 className="text-sm font-bold text-[#262626]">Save your history?</h3>
-                      <p className="text-[10px] text-[#262626]/60 mt-1 leading-relaxed">Join Parts Vertical to sync your searches across all your devices.</p>
+                    
+                    <div className="flex-1 text-center md:text-left">
+                      <p className="text-[18px] font-bold text-[#262626] leading-tight">
+                        Sync your searches across all devices.
+                      </p>
+                      <p className="mt-1.5 text-[14px] text-[#262626]/50 font-medium">
+                        Join Parts Vertical to keep your results safe and accessible anywhere.
+                      </p>
                     </div>
-                    <div className="flex flex-col w-full gap-2">
-                      <Link 
-                        href="/auth/login" 
-                        className="w-full bg-white border border-[#262626]/10 text-[#262626] py-2 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-neutral-50 transition-all shadow-sm"
-                      >
-                        Sign In
-                      </Link>
+                    
+                    <div className="flex flex-row items-center gap-4">
                       <Link 
                         href="/auth/signup" 
-                        className="w-full bg-[#262626] text-white py-2 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-[#1f1f1f] transition-all shadow-md"
+                        className="bg-[#262626] text-white px-10 py-4 rounded-full text-[12px] font-black uppercase tracking-[0.2em] transition-all hover:bg-black hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:translate-y-0"
                       >
                         Join Now
                       </Link>
+                      <Link 
+                        href="/auth/login" 
+                        className="bg-white border border-[#262626]/10 text-[#262626] px-10 py-4 rounded-full text-[12px] font-black uppercase tracking-[0.2em] transition-all hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1 active:translate-y-0"
+                      >
+                        Sign In
+                      </Link>
                     </div>
-                  </article>
-                )}
-              </div>
+                  </div>
+                </div>
+              )}
             </section>
           )}
           <AdSlot size="970x250" mobileSize="320x100" placement="home-mid-banner" className="py-2" />

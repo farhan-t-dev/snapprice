@@ -80,9 +80,17 @@ function marketplaceFromCountry(country?: string) {
 
 async function searchByMarketplace(query: string, marketplaceId: string, token: string) {
   const url = new URL('https://api.ebay.com/buy/browse/v1/item_summary/search');
-  url.searchParams.set('q', query);
+  // Auto-refine query with negative keywords to block non-parts
+  const negativeKeywords = '-shoe -sneaker -clothing -nike -adidas -apparel -toy -shirt -boot -trainer -jordan -dunk -yeezy';
+  const refinedQuery = query.toLowerCase().includes('part') || query.toLowerCase().includes('car') 
+    ? `${query} ${negativeKeywords}`
+    : `${query} car part ${negativeKeywords}`;
+    
+  url.searchParams.set('q', refinedQuery);
   url.searchParams.set('limit', '50');
   url.searchParams.set('auto_correct', 'KEYWORD');
+  // Category 6000 is for eBay Motors
+  url.searchParams.set('category_ids', '6000');
   url.searchParams.set('filter', 'buyingOptions:{FIXED_PRICE}');
 
   const response = await fetch(url.toString(), {
