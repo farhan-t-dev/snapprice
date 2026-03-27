@@ -288,16 +288,16 @@ export default async function Home() {
                       </p>
                     </div>
                     
-                    <div className="flex flex-row items-center gap-4">
+                    <div className="flex flex-row items-center gap-3 sm:gap-4">
                       <Link 
                         href="/auth/signup" 
-                        className="bg-[#262626] text-white px-10 py-4 rounded-full text-[12px] font-black uppercase tracking-[0.2em] transition-all hover:bg-black hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:translate-y-0"
+                        className="bg-[#262626] text-white px-6 sm:px-10 py-4 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-[0.2em] transition-all hover:bg-black hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:translate-y-0 whitespace-nowrap"
                       >
                         Join Now
                       </Link>
                       <Link 
                         href="/auth/login" 
-                        className="bg-white border border-[#262626]/10 text-[#262626] px-10 py-4 rounded-full text-[12px] font-black uppercase tracking-[0.2em] transition-all hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1 active:translate-y-0"
+                        className="bg-white border border-[#262626]/10 text-[#262626] px-6 sm:px-10 py-4 rounded-full text-[10px] sm:text-[12px] font-black uppercase tracking-[0.2em] transition-all hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1 active:translate-y-0 whitespace-nowrap"
                       >
                         Sign In
                       </Link>

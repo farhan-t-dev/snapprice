@@ -199,7 +199,7 @@ export async function POST(request: Request) {
         const candidates = query
           ? (await provider.searchByText?.(query, searchOptions)) ?? []
           : (await provider.searchByImage?.(imageUrl, searchOptions, imageBase64)) ?? [];
-        const normalized = normalizeCandidates(candidates).map((item) => ({
+        const normalized = normalizeCandidates(candidates, query || undefined).map((item) => ({
           ...item,
           providerId: provider.id
         }));
@@ -214,7 +214,7 @@ export async function POST(request: Request) {
       providerResults.flatMap((item) => item.normalized)
     );
 
-    const sorted = sortResults(combined, 'cheapest')
+    const sorted = sortResults(combined, 'best')
       .map((item) => ({ ...item, productUrl: sanitizeUrl(item.productUrl) }))
       .filter((item) => item.productUrl);
 

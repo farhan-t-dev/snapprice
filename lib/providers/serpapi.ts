@@ -108,14 +108,21 @@ export const serpApiProvider: SearchProvider = {
 
     const url = new URL('https://serpapi.com/search.json');
     url.searchParams.set('engine', 'google_shopping');
-    // Force category: Vehicles & Parts (5613)
-    url.searchParams.set('tbs', 'p_cat:5613');
     
-    // Auto-refine query with negative keywords
-    const negativeKeywords = '-shoe -sneaker -clothing -nike -adidas -apparel -toy -shirt -boot -trainer -jordan -dunk -yeezy -shirt -tshirt -hoodie';
-    const refinedQuery = query.toLowerCase().includes('part') || query.toLowerCase().includes('car') 
-      ? `${query} ${negativeKeywords}`
-      : `${query} car part ${negativeKeywords}`;
+    // Detect if query is likely a Part Number (Improved to handle spaces)
+    const partNumberRegex = /\b([A-Z0-9]{3,}[ -][A-Z0-9]{3,}[ -][A-Z0-9]{2,})\b|\b[A-Z0-9]{7,}\b/i;
+    const isPartNumber = partNumberRegex.test(query);
+    
+    // If it's NOT a part number, force category and add negative keywords
+    if (!isPartNumber) {
+      url.searchParams.set('tbs', 'p_cat:5613');
+    }
+    
+    const negativeKeywords = isPartNumber ? '' : ' -shoe -sneaker -clothing -nike -adidas -apparel -toy -shirt -boot -trainer -jordan -dunk -yeezy -shirt -tshirt -hoodie';
+    
+    const refinedQuery = query.toLowerCase().includes('part') || query.toLowerCase().includes('car') || isPartNumber
+      ? `${query}${negativeKeywords}`
+      : `${query} car part${negativeKeywords}`;
       
     url.searchParams.set('q', refinedQuery);
     url.searchParams.set('api_key', SERP_API_KEY);

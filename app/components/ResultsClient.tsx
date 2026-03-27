@@ -41,7 +41,7 @@ export default function ResultsClient({ sessionId }: { sessionId: string }) {
   const [session, setSession] = useState<SessionPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sortMode, setSortMode] = useState<'cheapest' | 'best'>('cheapest');
+  const [sortMode, setSortMode] = useState<'cheapest' | 'best'>('best');
   const [condition, setCondition] = useState('all');
   const [currency, setCurrency] = useState('all');
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
@@ -83,13 +83,7 @@ export default function ResultsClient({ sessionId }: { sessionId: string }) {
 
   const conditionOptions = useMemo(() => {
     if (!session) return [];
-    return Array.from(
-      new Set(
-        session.results
-          .map((item) => item.condition?.toLowerCase() ?? 'unknown')
-          .filter(Boolean)
-      )
-    ).sort();
+    return Array.from(new Set(session.results.map((item) => item.condition))).filter(Boolean).sort() as string[];
   }, [session]);
 
   const regionOptions = useMemo(() => {
@@ -108,15 +102,17 @@ export default function ResultsClient({ sessionId }: { sessionId: string }) {
       EBAY_AU: 'Australia',
       EBAY_CA: 'Canada',
       EBAY_DE: 'Germany',
-      EBAY_FR: 'France'
+      EBAY_FR: 'France',
+      EBAY_IT: 'Italy',
+      EBAY_ES: 'Spain'
     };
     return ids
-      .map((id) => ({ id, label: labelMap[id] ?? id }))
+      .map((id) => ({ id, label: labelMap[id] ?? (id.startsWith('EBAY_') ? id.replace('EBAY_', '') : id) }))
       .sort((a, b) => a.label.localeCompare(b.label));
   }, [session]);
 
   useEffect(() => {
-    if (regionOptions.length > 0) {
+    if (regionOptions.length > 0 && selectedRegions.length === 0) {
       setSelectedRegions(regionOptions.map((option) => option.id));
     }
   }, [regionOptions]);
@@ -127,9 +123,10 @@ export default function ResultsClient({ sessionId }: { sessionId: string }) {
 
     if (currency !== 'all') results = results.filter((item) => item.currency === currency);
     if (condition !== 'all') {
-      results = results.filter((item) => (item.condition?.toLowerCase() ?? 'unknown') === condition);
+      results = results.filter((item) => item.condition === condition);
     }
-    if (selectedRegions.length > 0) {
+    // If some but not all regions are selected, filter. If all or none, show all.
+    if (selectedRegions.length > 0 && selectedRegions.length < regionOptions.length) {
       results = results.filter((item) => item.marketplace && selectedRegions.includes(item.marketplace));
     }
 
@@ -155,7 +152,7 @@ export default function ResultsClient({ sessionId }: { sessionId: string }) {
       delete copy.index;
       return copy;
     });
-  }, [session, currency, condition, sortMode, selectedRegions]);
+  }, [session, currency, condition, sortMode, selectedRegions, regionOptions.length]);
 
   if (loading) {
     return (

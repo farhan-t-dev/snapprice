@@ -44,20 +44,6 @@ function renderStars(rating?: number | null) {
   );
 }
 
-function normalizeConditionLabel(value?: string | null) {
-  if (!value) return 'Unknown';
-  const normalized = value.trim().toLowerCase();
-  const newLabels = new Set([
-    'new',
-    'brand new',
-    'nuovo',
-    'neu',
-    'nuevo',
-    'neuf'
-  ]);
-  return newLabels.has(normalized) ? 'New' : value;
-}
-
 export default function ProductCard({
   result,
   sessionId,
@@ -73,7 +59,7 @@ export default function ProductCard({
       : result.shippingPrice === 0
         ? 'FREE'
         : formatPrice(result.shippingPrice, result.currency);
-  const condition = normalizeConditionLabel(result.condition);
+  const condition = result.condition ?? 'Used';
 
   return (
     <div

@@ -31,12 +31,12 @@ const GENERAL_MARKETPLACES = ['ebay.', 'amazon.', 'marketplace', 'etsy.', 'aliex
 
 const BANNED_DOMAINS = [
   'target.com', 'walmart.com', 'macys.com', 'nordstrom.com', 'nike.com',
-  'adidas.com', 'zappos.com', 'etsy.com', 'redbubble.com', 'teepublic.com',
+  'adidas.com', 'zappos.com', 'redbubble.com', 'teepublic.com',
   'spreadshirt.com', 'cafepress.com', 'zazzle.com', 'temu.com', 'shein.com',
   'bestbuy.com', 'kohls.com', 'ralphlauren.com', 'gap.com', 'oldnavy.com'
 ];
 
-function getRelevanceScore(title: string, productUrl: string): number {
+function getRelevanceScore(title: string, productUrl: string, query?: string): number {
   const normalizedTitle = ` ${title.toLowerCase()} `;
   const normalizedUrl = productUrl.toLowerCase();
   
@@ -93,15 +93,44 @@ function getRelevanceScore(title: string, productUrl: string): number {
     }
   }
 
-  // 4. THE "IRON-CLAD" RULE:
-  if (!isSafeDomain && mechanicalMatchCount === 0) {
+  // 4. PART NUMBER DETECTION (Improved)
+  const partNumberRegex = /\b([A-Z0-9]{3,}[ -][A-Z0-9]{3,}[ -][A-Z0-9]{2,})\b|\b[A-Z0-9]{7,}\b/i;
+  const looksLikePartNumber = partNumberRegex.test(normalizedTitle);
+  if (looksLikePartNumber) {
+    score += 0.4;
+  }
+
+  // 5. QUERY SIMILARITY BOOST
+  if (query) {
+    const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+    if (queryWords.length > 0) {
+      let matchCount = 0;
+      for (const word of queryWords) {
+        if (normalizedTitle.toLowerCase().includes(word)) matchCount++;
+      }
+      score += (matchCount / queryWords.length) * 0.3;
+    }
+  }
+
+  // 6. THE "IRON-CLAD" RULE:
+  if (!isSafeDomain && mechanicalMatchCount === 0 && !looksLikePartNumber) {
     return 0;
   }
 
   return Math.min(Math.max(score, 0), 1);
 }
 
-export function normalizeCandidates(candidates: ProviderCandidate[]): NormalizedResult[] {
+export function normalizeCondition(value?: string | null): string {
+  if (!value) return 'Used';
+  const normalized = value.trim().toLowerCase();
+  
+  const newKeywords = ['new', 'nuovo', 'neu', 'nuevo', 'neuf', '1000', 'brand new', 'new other'];
+  if (newKeywords.some(kw => normalized.includes(kw))) return 'New';
+  
+  return 'Used';
+}
+
+export function normalizeCandidates(candidates: ProviderCandidate[], query?: string): NormalizedResult[] {
   const results: NormalizedResult[] = [];
 
   for (const candidate of candidates) {
@@ -115,7 +144,7 @@ export function normalizeCandidates(candidates: ProviderCandidate[]): Normalized
       continue;
     }
 
-    const relevanceScore = getRelevanceScore(candidate.title, candidate.productUrl);
+    const relevanceScore = getRelevanceScore(candidate.title, candidate.productUrl, query);
     
     // STRICT FILTER: Threshold raised to 0.45
     if (relevanceScore < 0.45) {
@@ -132,7 +161,7 @@ export function normalizeCandidates(candidates: ProviderCandidate[]): Normalized
       price: candidate.price,
       currency: candidate.currency,
       shippingPrice: candidate.shippingPrice,
-      condition: candidate.condition,
+      condition: normalizeCondition(candidate.condition),
       availability: candidate.availability,
       rating: candidate.rating,
       reviewCount: candidate.reviewCount,
