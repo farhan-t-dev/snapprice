@@ -80,11 +80,17 @@ function marketplaceFromCountry(country?: string) {
 
 async function searchByMarketplace(query: string, marketplaceId: string, token: string) {
   const url = new URL('https://api.ebay.com/buy/browse/v1/item_summary/search');
-  // Auto-refine query with negative keywords to block non-parts
-  const negativeKeywords = '-shoe -sneaker -clothing -nike -adidas -apparel -toy -shirt -boot -trainer -jordan -dunk -yeezy';
-  const refinedQuery = query.toLowerCase().includes('part') || query.toLowerCase().includes('car') 
-    ? `${query} ${negativeKeywords}`
-    : `${query} car part ${negativeKeywords}`;
+  
+  // Detect if query is likely a Part Number (Improved to handle spaces)
+  const partNumberRegex = /\b([A-Z0-9]{3,}[ -][A-Z0-9]{3,}[ -][A-Z0-9]{2,})\b|\b[A-Z0-9]{7,}\b/i;
+  const isPartNumber = partNumberRegex.test(query);
+  
+  // Only add negative keywords if it's NOT a part number search
+  const negativeKeywords = isPartNumber ? '' : ' -shoe -sneaker -clothing -nike -adidas -apparel -toy -shirt -boot -trainer -jordan -dunk -yeezy';
+  
+  const refinedQuery = query.toLowerCase().includes('part') || query.toLowerCase().includes('car') || isPartNumber
+    ? `${query}${negativeKeywords}`
+    : `${query} car part${negativeKeywords}`;
     
   url.searchParams.set('q', refinedQuery);
   url.searchParams.set('limit', '50');
@@ -103,10 +109,10 @@ async function searchByMarketplace(query: string, marketplaceId: string, token: 
   if (!response.ok) return [];
   const json = (await response.json()) as { itemSummaries?: EbayItemSummary[] };
   const items = Array.isArray(json.itemSummaries) ? json.itemSummaries : [];
-  return items.map((item) => normalizeItem(item, marketplaceId)).filter(Boolean) as ProviderCandidate[];
+  return items.map((item, idx) => normalizeItem(item, marketplaceId, idx)).filter(Boolean) as ProviderCandidate[];
 }
 
-function normalizeItem(item: EbayItemSummary, marketplaceId: string): ProviderCandidate | null {
+function normalizeItem(item: EbayItemSummary, marketplaceId: string, index: number): ProviderCandidate | null {
   const imageUrl = item.image?.imageUrl || item.thumbnailImages?.[0]?.imageUrl || '';
   const priceValue = item.price?.value ? Number(item.price.value) : undefined;
   const currency = item.price?.currency || undefined;
@@ -130,7 +136,7 @@ function normalizeItem(item: EbayItemSummary, marketplaceId: string): ProviderCa
     availability: item.estimatedAvailabilityStatus || undefined,
     marketplace: marketplaceId,
     productUrl,
-    matchScore: typeof item.matchScore === 'number' ? item.matchScore : undefined,
+    matchScore: typeof item.matchScore === 'number' ? item.matchScore : Math.max(0, 1 - index / 100),
     raw: item
   };
 }
@@ -164,7 +170,7 @@ export const ebayProvider: SearchProvider = {
       if (!response.ok) continue;
       const json = (await response.json()) as { itemSummaries?: EbayItemSummary[] };
       const items = Array.isArray(json.itemSummaries) ? json.itemSummaries : [];
-      results.push(...(items.map((item) => normalizeItem(item, market)).filter(Boolean) as ProviderCandidate[]));
+      results.push(...(items.map((item, idx) => normalizeItem(item, market, idx)).filter(Boolean) as ProviderCandidate[]));
     }
 
     return results;

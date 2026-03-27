@@ -29,8 +29,6 @@ export default function SortFilterBar({
   currencyOptions,
   conditionOptions
 }: Props) {
-  const visibleConditionOptions = conditionOptions.filter((option) => option !== 'neu' && option !== 'unknown');
-
   return (
     <div className="flex flex-col gap-4 rounded-2xl border border-[#5ec2a4] bg-white p-5 shadow-soft md:flex-row md:items-center md:justify-between">
       <div className="flex flex-wrap gap-2">
@@ -61,7 +59,7 @@ export default function SortFilterBar({
           className="select-cta select-cta-pill rounded-full border border-[#81dcc1]/30 bg-white px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#020617] hover:border-[#81dcc1]/60"
         >
           <option value="all">Condition: All</option>
-          {visibleConditionOptions.map((option) => (
+          {conditionOptions.map((option) => (
             <option key={option} value={option}>
               {`Condition: ${option}`}
             </option>

@@ -26,10 +26,22 @@ export async function GET(
     });
   }
 
-  const session = await prisma.searchSession.findUnique({
-    where: { id },
-    include: { results: true }
-  }).catch(() => null);
+  let session = null;
+  let retries = 3;
+  
+  while (retries > 0) {
+    try {
+      session = await prisma.searchSession.findUnique({
+        where: { id },
+        include: { results: true }
+      });
+      break; // Success
+    } catch (e) {
+      retries--;
+      if (retries === 0) throw e;
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1s
+    }
+  }
 
   if (!session) {
     return NextResponse.json({ error: 'Session not found.' }, { status: 404 });

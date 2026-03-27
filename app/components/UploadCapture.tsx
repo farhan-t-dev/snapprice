@@ -255,13 +255,13 @@ export default function UploadCapture() {
               ))}
             </select>
           </label>
-          <AdSlot
-            size="320x100"
-            mobileSize="320x100"
-            placement="home-upload-inline"
-            align="left"
-            className="mt-6 max-w-[320px]"
-          />
+          <button
+            className="mt-4 inline-flex w-full max-w-[380px] items-center justify-center rounded-full bg-[#81dcc1] px-7 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-white transition enabled:hover:bg-[#5ec2a4] disabled:cursor-not-allowed disabled:bg-[#81dcc1]/65"
+            onClick={handleSubmit}
+            disabled={!isReady}
+          >
+            {loading ? 'Searching...' : 'Find best prices'}
+          </button>
         </div>
         <div className="flex flex-col items-center gap-4 lg:items-end">
           <div className="w-full max-w-[380px] overflow-hidden rounded-2xl border border-[#5ec2a4] bg-white">
@@ -281,13 +281,13 @@ export default function UploadCapture() {
               </div>
             )}
           </div>
-          <button
-            className="inline-flex w-full max-w-[380px] items-center justify-center rounded-full bg-[#81dcc1] px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white transition enabled:hover:bg-[#5ec2a4] disabled:cursor-not-allowed disabled:bg-[#81dcc1]/65"
-            onClick={handleSubmit}
-            disabled={!isReady}
-          >
-            {loading ? 'Searching...' : 'Find best prices'}
-          </button>
+          <AdSlot
+            size="320x100"
+            mobileSize="320x100"
+            placement="home-upload-inline"
+            align="left"
+            className="mt-2 max-w-[320px]"
+          />
         </div>
       </div>
       <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-[#262626]/70">
