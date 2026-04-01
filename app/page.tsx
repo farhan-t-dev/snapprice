@@ -176,8 +176,8 @@ export default async function Home() {
               <div className="mx-auto w-[250px]">
                 <div className="relative h-[80px] w-full">
                   <Image
-                    src="/logos/TS.png"
-                    alt="TS logo"
+                    src="/logos/PartsSeekr-Logo.png"
+                    alt="Parts Seekr logo"
                     fill
                     sizes="250px"
                     className="object-contain"
@@ -193,10 +193,10 @@ export default async function Home() {
               />
               <h1 className="text-xl font-semibold leading-[1.35] text-[#262626] sm:text-2xl md:text-4xl">
                 <span className="text-2xl sm:text-3xl md:text-5xl">Searching for an OEM part?</span>
-                <span className="mt-2 block font-medium">Parts Vertical discovers the best pricing for you instantly.</span>
+                <span className="mt-2 block font-medium">Parts Seekr discovers the best pricing for you instantly.</span>
               </h1>
               <p className="max-w-2xl text-[15px] text-[#5ec2a4] md:text-[17px]">
-                Upload the vehicle part image or add the an OEM part number and let <span className="font-bold">Parts Vertical</span> scan the web for verified parts, delivering trusted listings with the best prices, intelligently sorted by best value.
+                Upload the vehicle part image or add the an OEM part number and let <span className="font-bold">Parts Seekr</span> scan the web for verified parts, delivering trusted listings with the best prices, intelligently sorted by best value.
               </p>
               
               {!user && (
@@ -284,7 +284,7 @@ export default async function Home() {
                         Sync your searches across all devices.
                       </p>
                       <p className="mt-1.5 text-[14px] text-[#262626]/50 font-medium">
-                        Join Parts Vertical to keep your results safe and accessible anywhere.
+                        Join Parts Seekr to keep your results safe and accessible anywhere.
                       </p>
                     </div>
                     

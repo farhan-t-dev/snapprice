@@ -14,8 +14,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <Link href="/" className="group mb-6 transition-transform hover:scale-105">
             <div className="relative h-16 w-48">
               <Image
-                src="/logos/TS.png"
-                alt="PCA4 Logo"
+                src="/logos/PartsSeekr-Logo.png"
+                alt="Parts Seekr Logo"
                 fill
                 className="object-contain"
                 priority
@@ -30,7 +30,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </div>
         
         <p className="mt-8 text-center text-sm text-[#262626]/50">
-          &copy; {new Date().getFullYear()} Parts Vertical. All rights reserved.
+          &copy; {new Date().getFullYear()} Parts Seekr. All rights reserved.
         </p>
       </div>
     </div>

@@ -228,7 +228,7 @@ export default function UploadCapture() {
             </span>
           </label>
           <label className="flex flex-col gap-2">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#262626]">Or type an OEM part number</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#262626]">Search parts or add OEM part number</span>
             <input
               type="text"
               value={query}

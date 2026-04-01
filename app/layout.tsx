@@ -3,12 +3,12 @@ import type { ReactNode } from 'react';
 import Script from 'next/script';
 
 export const metadata = {
-  title: 'Parts Vertical',
+  title: 'Parts Seekr',
   description: 'Snap a product photo and find the best prices.',
   icons: {
-    icon: '/logos/camera-icon.png',
-    shortcut: '/logos/camera-icon.png',
-    apple: '/logos/camera-icon.png'
+    icon: '/logos/PS-Favicon.png',
+    shortcut: '/logos/PS-Favicon.png',
+    apple: '/logos/PS-Favicon-300.png'
   }
 };
 

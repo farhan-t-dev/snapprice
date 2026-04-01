@@ -184,8 +184,8 @@ export default function ResultsClient({ sessionId }: { sessionId: string }) {
           <div className="flex items-center gap-4">
             <div className="h-14 w-14 overflow-hidden rounded-2xl border border-[#5ec2a4] bg-white shadow-sm">
               <Image
-                src="/logos/camera-icon.png"
-                alt="Camera icon"
+                src="/logos/PS-Favicon.png"
+                alt="Parts Seekr icon"
                 width={56}
                 height={56}
                 className="h-full w-full bg-white object-contain p-1"

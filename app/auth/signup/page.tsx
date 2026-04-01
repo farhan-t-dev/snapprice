@@ -51,7 +51,7 @@ export default function SignupPage() {
     <div className="space-y-8 fade-up">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-[#262626]">Create account</h2>
-        <p className="mt-2 text-sm text-neutral-500">Join Parts Vertical to track your searches</p>
+        <p className="mt-2 text-sm text-neutral-500">Join Parts Seekr to track your searches</p>
       </div>
       
       {error && (

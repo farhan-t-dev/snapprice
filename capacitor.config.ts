@@ -3,8 +3,8 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const appUrl = process.env.CAP_SERVER_URL;
 
 const config: CapacitorConfig = {
-  appId: 'com.partsvertical.app',
-  appName: 'Parts Vertical',
+  appId: 'com.partsseekr.app',
+  appName: 'Parts Seekr',
   webDir: 'out',
   server: appUrl
     ? {
