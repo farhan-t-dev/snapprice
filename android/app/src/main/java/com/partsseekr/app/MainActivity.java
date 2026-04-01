@@ -1,4 +1,4 @@
-package com.partsvertical.app;
+package com.partsseekr.app;
 
 import com.getcapacitor.BridgeActivity;
 

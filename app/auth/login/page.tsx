@@ -109,7 +109,7 @@ export default function LoginPage() {
 
       <div className="text-center">
         <p className="text-sm text-neutral-500">
-          New to Parts Vertical?{' '}
+          New to Parts Seekr?{' '}
           <Link href="/auth/signup" className="font-bold text-[#5ec2a4] hover:text-[#4da98e] transition-colors underline-offset-4 hover:underline">
             Create an account
           </Link>

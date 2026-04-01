@@ -1,6 +1,6 @@
-# Parts Vertical
+# Parts Seekr
 
-Parts Vertical is a lightweight MVP that lets users upload (or capture) a product photo, runs a visual search through a provider API, and returns a price-sorted grid of matching purchase options.
+Parts Seekr is a lightweight MVP that lets users upload (or capture) a product photo, runs a visual search through a provider API, and returns a price-sorted grid of matching purchase options.
 
 ## Local setup
 
@@ -29,7 +29,7 @@ Open `http://localhost:3000`.
 
 ## Provider configuration
 
-Parts Vertical uses a provider adapter so you can swap product search APIs.
+Parts Seekr uses a provider adapter so you can swap product search APIs.
 
 - `DATABASE_URL=...` (Postgres connection string)
 - `PROVIDER_IDS=ebay,amazon,aliexpress`
@@ -45,7 +45,7 @@ Parts Vertical uses a provider adapter so you can swap product search APIs.
 - `ALIEXPRESS_APP_SECRET=...`
 - `ALIEXPRESS_TRACK_ID=...`
 - `NEXT_PUBLIC_BASE_URL=http://localhost:3000`
-- `NEXT_PUBLIC_GAM_AD_UNIT_PATH=` (for Google Ad Manager, e.g. `/1234567/parts-vertical`)
+- `NEXT_PUBLIC_GAM_AD_UNIT_PATH=` (for Google Ad Manager, e.g. `/1234567/parts-seekr`)
 - `CAP_SERVER_URL=` (required for Capacitor apps; use your deployed HTTPS URL)
 - `DEMO_MODE=true` (optional)
 - `SUPABASE_URL=...` (for uploads)
@@ -57,7 +57,7 @@ Providers include eBay Motors, Amazon, and AliExpress. If credentials are missin
 ### Google Ad Manager setup
 
 Ad slots render through Google Publisher Tag (GPT) when `NEXT_PUBLIC_GAM_AD_UNIT_PATH` is set.
-The app accepts either `/1234567/parts-vertical` or `1234567/parts-vertical` and normalizes it at runtime.
+The app accepts either `/1234567/parts-seekr` or `1234567/parts-seekr` and normalizes it at runtime.
 
 Configured placements in this app:
 - `home-hero-banner`
@@ -68,8 +68,8 @@ Configured placements in this app:
 - `results-bottom-banner`
 
 Example ad unit path resolution:
-- Base: `/1234567/parts-vertical`
-- Slot path generated in app: `/1234567/parts-vertical/results-top-banner`
+- Base: `/1234567/parts-seekr`
+- Slot path generated in app: `/1234567/parts-seekr/results-top-banner`
 
 To enable live banners in a deployment:
 1) Set `NEXT_PUBLIC_GAM_AD_UNIT_PATH` in the deployment environment
@@ -83,7 +83,7 @@ If GAM has no fill for a slot, the app now collapses the empty div in production
 
 This project uses server APIs, so mobile builds should load the deployed web app URL (not a static export).
 
-1) Set `CAP_SERVER_URL` in `.env` to your deployed app (for example, `https://app.partsvertical.com`)
+1) Set `CAP_SERVER_URL` in `.env` to your deployed app (for example, `https://app.partsseekr.com`)
 2) Generate native projects:
 ```
 npm run cap:add:android

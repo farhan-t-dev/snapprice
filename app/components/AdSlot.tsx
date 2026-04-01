@@ -81,7 +81,7 @@ export default function AdSlot({
 
     const w = window as Window & {
       googletag?: Googletag;
-      __partsVerticalGptEnabled?: boolean;
+      __partsSeekrGptEnabled?: boolean;
     };
     const googletag = w.googletag;
     if (!googletag) return;
@@ -103,11 +103,11 @@ export default function AdSlot({
 
       slot.addService(googletag.pubads());
 
-      if (!w.__partsVerticalGptEnabled) {
+      if (!w.__partsSeekrGptEnabled) {
         googletag.pubads().collapseEmptyDivs();
         googletag.pubads().enableSingleRequest();
         googletag.enableServices();
-        w.__partsVerticalGptEnabled = true;
+        w.__partsSeekrGptEnabled = true;
       }
 
       slotRef.current = slot;
