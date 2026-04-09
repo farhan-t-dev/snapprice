@@ -5,6 +5,21 @@ import Image from 'next/image'
 import Link from 'next/link'
 import ClearHistoryButton from '@/app/components/ClearHistoryButton'
 
+function normalizeImageUrl(url: string) {
+  if (!url) return '/placeholder.svg'
+  if (url.startsWith('http')) {
+    try {
+      const parsed = new URL(url)
+      if (parsed.pathname === '/placeholder.svg' || parsed.pathname.startsWith('/uploads/')) {
+        return parsed.pathname
+      }
+    } catch {
+      return url
+    }
+  }
+  return url
+}
+
 export default async function HistoryPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -81,12 +96,13 @@ export default async function HistoryPage() {
                 className="group relative flex items-center gap-6 bg-white rounded-[32px] border border-[#5ec2a4]/10 p-5 hover:border-[#5ec2a4]/40 transition-all shadow-sm hover:shadow-xl fade-up"
                 style={{ animationDelay: `${idx * 50}ms` }}
               >
-                <div className="relative h-24 w-24 flex-shrink-0 rounded-[24px] overflow-hidden border-4 border-[#f8f9fa] shadow-inner group-hover:scale-105 transition-transform duration-500">
+                <div className="relative h-24 w-24 flex-shrink-0 rounded-[24px] overflow-hidden border-4 border-[#f8f9fa] shadow-inner group-hover:scale-105 transition-transform duration-500 bg-neutral-100">
                   <Image 
-                    src={session.imageUrl} 
+                    src={normalizeImageUrl(session.results[0]?.image || session.imageUrl)} 
                     alt={session.query || 'Search image'} 
                     fill 
                     className="object-cover"
+                    unoptimized
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
                 </div>
