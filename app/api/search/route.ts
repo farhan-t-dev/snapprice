@@ -87,7 +87,7 @@ export async function POST(request: Request) {
   const imageHash = buffer ? hashBuffer(buffer) : hashString(`text:${query.toLowerCase()}`);
 
   const origin = process.env.NEXT_PUBLIC_BASE_URL ?? new URL(request.url).origin;
-  let imageUrl = `${origin}/placeholder.svg`;
+  let imageUrl = `/placeholder.svg`;
 
   // Get authenticated user
   const supabase = await createClient();
@@ -140,7 +140,7 @@ export async function POST(request: Request) {
       await fs.mkdir(uploadsDir, { recursive: true });
       const filePath = path.join(uploadsDir, filename);
       await fs.writeFile(filePath, buffer);
-      imageUrl = `${origin}/uploads/${filename}`;
+      imageUrl = `/uploads/${filename}`;
     }
   }
 
