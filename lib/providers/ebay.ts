@@ -2,6 +2,7 @@ import type { ProviderCandidate, ProviderSearchOptions, SearchProvider } from '.
 
 const EBAY_CLIENT_ID = process.env.EBAY_CLIENT_ID;
 const EBAY_CLIENT_SECRET = process.env.EBAY_CLIENT_SECRET;
+const EBAY_CAMPAIGN_ID = process.env.EBAY_CAMPAIGN_ID;
 const EBAY_DEFAULT_MARKETPLACE = process.env.EBAY_MARKETPLACE_ID || 'EBAY_MOTOR';
 
 let cachedToken: { token: string; expiresAt: number } | null = null;
@@ -102,7 +103,10 @@ async function searchByMarketplace(query: string, marketplaceId: string, token: 
   const response = await fetch(url.toString(), {
     headers: {
       Authorization: `Bearer ${token}`,
-      'X-EBAY-C-MARKETPLACE-ID': marketplaceId
+      'X-EBAY-C-MARKETPLACE-ID': marketplaceId,
+      ...(EBAY_CAMPAIGN_ID ? { 
+        'X-EBAY-C-ENDUSERCTX': `affiliateCampaignId=${EBAY_CAMPAIGN_ID},affiliateReferenceId=partseekr-001,contextId=partseekr-001` 
+      } : {})
     }
   });
 
@@ -120,7 +124,7 @@ function normalizeItem(item: EbayItemSummary, marketplaceId: string, index: numb
   const shippingCurrency = item.shippingOptions?.[0]?.shippingCost?.currency;
   const shippingValue = shippingCost ? Number(shippingCost) : undefined;
 
-  const productUrl = item.itemWebUrl || item.itemAffiliateWebUrl || item.itemHref || undefined;
+  const productUrl = item.itemAffiliateWebUrl || item.itemWebUrl || item.itemHref || undefined;
 
   if (!item.title || !imageUrl || !priceValue || !currency || !productUrl) return null;
 
@@ -162,7 +166,10 @@ export const ebayProvider: SearchProvider = {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
-          'X-EBAY-C-MARKETPLACE-ID': market
+          'X-EBAY-C-MARKETPLACE-ID': market,
+          ...(EBAY_CAMPAIGN_ID ? { 
+            'X-EBAY-C-ENDUSERCTX': `affiliateCampaignId=${EBAY_CAMPAIGN_ID},affiliateReferenceId=partseekr-001,contextId=partseekr-001` 
+          } : {})
         },
         body: JSON.stringify({ image: imageBase64 })
       });
